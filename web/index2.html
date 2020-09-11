@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <!-- `greet` 是在下面定义的方法名 -->
+    <button v-on:click="greet">Greet</button>
+    {{ name }}
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: 'Vue.js'
+        },
+        // 在 `methods` 对象中定义方法
+        methods: {
+            greet: function (event) {
+                axios
+                    .get('http://127.0.0.1:8000/api/roles/?page=1&size=2')
+                    .then(response => {
+                        let data = JSON.stringify(response.data.results);
+                        data = JSON.parse(data)
+                        this.name = data[0].title
+
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
